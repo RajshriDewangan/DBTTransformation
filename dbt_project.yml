@@ -32,9 +32,19 @@ clean-targets:         # directories to be removed by `dbt clean`
 # as tables. These settings can be overridden in the individual model files
 # using the `{{ config(...) }}` macro.
 
-on-run-start: "{{ insert_hooks('on_run_start') }}"
-# on-run-end: "insert into VWE_DATABASE.PUBLIC.Hooks(hook_type) values ('on_run_end');commit;"
+# on-run-start: "{{ insert_hooks('run_start') }}"
+# on-run-end: "{{ insert_hooks('run_end') }}"
+# on-run-start: insert into "VWE_DATABASE"."PUBLIC"."Hooks" (hook_type) values ('run_start');commit;
+# on-run-end: insert into "VWE_DATABASE"."PUBLIC"."Hooks" (hook_type) values ('run_end');commit;
+# on-run-start: revoke usage on schema DBT_RDEW_RAJSHRI to role customrole;commit;
+# on-run-start: create schema rajidew;commit;
+
 models:
+  # pre-hook: "{{ insert_hooks('model_start') }}"
+  # post-hook : "{{ insert_hooks('model_end') }}"
+  # pre-hook: create or replace table "VWE_DATABASE"."PUBLIC"."Demo"(Id varchar ,Order_Date date, Name varchar,status varchar);commit;
+  # post-hook: insert into "VWE_DATABASE"."PUBLIC"."Demo"(Id ,Order_Date ,Name ,status) values ('106', '11/11/2019', 'shree', 'Happy');commit;
+
   +on_schema_change: "sync_all_columns"
   my_new_project:
     # Applies to all files under models/example/
